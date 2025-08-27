@@ -1,0 +1,22 @@
+# Node modules
+node_modules/
+
+# Logs
+logs/
+*.log
+request.rest
+# dotenv environment files
+.env
+request.rest
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# npm & yarn
+package-lock.json
+yarn.lock
+
+# Build files
+dist/
+build/
