@@ -24,6 +24,7 @@ export const getCustomers = async (req, res) => {
         res.json({
             totalItems: count,
             totalPages: Math.ceil(count / limit),
+            currentPage: parseInt(page),
             data: rows
         })
 

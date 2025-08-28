@@ -15,7 +15,7 @@ export const getStaffById = async (req, res) => {
     try {
         const response = await Staff.findOne({
             where: {
-                staff_id: req.params.id
+                staff_id: req.params.staff_id
             }
         })
         res.status(200).json(response)
@@ -46,7 +46,7 @@ export const createStaff = async (req, res) => {
 export const updateStaff = async (req, res) => {
     const staff = await Staff.findOne({
         where: {
-            staff_id: req.params.id
+            staff_id: req.params.staff_id
         }
     });
     if (!staff) return res.status(404).json({ msg: 'Sorry, Staff doesnt exist !' })

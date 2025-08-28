@@ -1,4 +1,4 @@
-import Category from "../models/Category";
+import Category from "../models/Category.js";
 
 
 export const getAllCategory = async (req,res) => {
