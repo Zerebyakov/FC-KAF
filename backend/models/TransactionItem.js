@@ -1,22 +1,23 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Config.js";
-import User from "./Users.js";
+import Transaction from "./Transaction.js";
 import Product from "./Product.js";
 
 
+
 const {DataTypes} = Sequelize;
-const Cart = db.define('Cart',{
-    cart_id:{
+const TransactionItem = db.define('TransactionItem',{
+    item_id:{
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    user_id:{
+    transaction_id:{
         type: DataTypes.INTEGER,
         allowNull: false,
         references:{
-            model: User,
-            key: 'user_id'
+            model: Transaction,
+            key:'transaction_id'
         }
     },
     product_id:{
@@ -30,35 +31,38 @@ const Cart = db.define('Cart',{
     quantity:{
         type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: 1,
         validate:{
-            min: 1
+            min:1
         }
+    },
+    unit_price:{
+        type: DataTypes.DECIMAL(10,2),
+        allowNull: false
     },
     selected_addons:{
         type: DataTypes.JSON,
         allowNull: true,
-        comment: 'Array of selected addon IDs with quantities'
+        comment:'Array of selected addons with prices'
     },
     subtotal:{
         type: DataTypes.DECIMAL(10,2),
         allowNull: false
     },
-    notes:{
+    item_notes:{
         type: DataTypes.TEXT,
         allowNull: true
     }
 },{
     freezeTableName: true,
     timestamps: true,
-    tableName: 'carts'
+    tableName:'transaction_items'
 })
 
-User.hasMany(Cart, {foreignKey:'user_id'})
-Cart.belongsTo(User, {foreignKey:'user_id'})
+Transaction.hasMany(TransactionItem, {foreignKey:'transaction_id'})
+TransactionItem.belongsTo(Transaction, {foreignKey:'transaction_id'})
 
-Product.hasMany(Cart, {foreignKey:'product_id'})
-Cart.belongsTo(Product, {foreignKey:'product_id'})
+Product.hasMany(TransactionItem, {foreignKey:'product_id'})
+TransactionItem.belongsTo(Product, {foreignKey:'product_id'})
 
+export default TransactionItem;
 
-export default Cart;

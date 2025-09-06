@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
-import db from "../config/Database.js";
+import db from "../config/Config.js";
 
-const {DataTypes} = Sequelize;
+
 const Category = db.define('Category',{
     category_id:{
         type: DataTypes.INTEGER,
@@ -11,15 +11,27 @@ const Category = db.define('Category',{
     name:{
         type: DataTypes.STRING(100),
         allowNull: false
+    },
+    description:{
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
+    image_url:{
+        type: DataTypes.STRING(255),
+        allowNull: true
+    },
+    is_active:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+    },
+    sort_order:{
+        type: DataTypes.INTEGER,
+        defaultValue: 0
     }
 },{
     freezeTableName: true,
-    tableName:'categories',
-    timestamps: false
+    timestamps: true,
+    tableName: 'categories'
 })
 
 export default Category;
-
-(async () => {
-    await db.sync();
-})()
