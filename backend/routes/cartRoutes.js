@@ -7,11 +7,11 @@ import { addToCart, clearCart, getCart, removeFromCart, updateCartItem } from '.
 const router = express.Router();
 
 router.use(requireAuth);
-router.get('/cart', getCart);
-router.post('/cart/add', addToCart);
-router.put('/cart/item/:id', updateCartItem)
-router.delete('/cart/item/:id', removeFromCart)
-router.delete('/cart/clear', clearCart)
+router.get('/', getCart);
+router.post('/add', addToCart);
+router.put('/item/:id', updateCartItem)
+router.delete('/item/:id', removeFromCart)
+router.delete('/clear', clearCart)
 
 
 export default router;

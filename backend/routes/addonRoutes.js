@@ -7,24 +7,24 @@ import { adminActionLogger } from '../middleware/LoggerMiddleware.js';
 
 const router = express.Router();
 
-router.get('/addons/product/:id',
+router.get('/product/:id',
     optionalAuth,
     getAddonsByProduct
 )
-router.post('/addons',
+router.post('/',
     requireAdminAuth,
     checkPermission(PERMISSIONS.CREATE_PRODUCT),
     adminActionLogger('CREATE_ADDON'),
     createAddon
 )
-router.put('/addon/:id',
+router.put('/:id',
     requireAdminAuth,
     checkPermission(PERMISSIONS.EDIT_PRODUCT),
     adminActionLogger('UPDATE_ADDON'),
     updateAddon
 )
 
-router.delete('/addon/:id',
+router.delete('/:id',
     requireAdminAuth,
     checkPermission(PERMISSIONS.DELETE_PRODUCT),
     adminActionLogger('DELETE_ADDON'),

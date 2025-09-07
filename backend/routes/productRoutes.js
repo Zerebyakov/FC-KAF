@@ -7,17 +7,17 @@ import { adminActionLogger } from '../middleware/LoggerMiddleware.js';
 
 const router = express.Router();
 
-router.get('/products', optionalAuth, getAllProducts);
-router.get('/products/:id', optionalAuth, getProductById);
+router.get('/', optionalAuth, getAllProducts);
+router.get('/:id', optionalAuth, getProductById);
 
 // Rute admin
-router.post('/products',
+router.post('/',
     requireAdminAuth,checkPermission(PERMISSIONS.CREATE_PRODUCT),
     adminActionLogger('CREATE_PRODUCT'),
     createProduct
 )
 
-router.put('/products/:id',
+router.put('/:id',
     requireAdminAuth,
     checkPermission(PERMISSIONS.EDIT_PRODUCT),
     adminActionLogger('UPDATE_PRODUCT'),
@@ -25,7 +25,7 @@ router.put('/products/:id',
 )
 
 
-router.put('/products/:id/stock',
+router.put('/:id/stock',
     requireAdminAuth,
     checkPermission(PERMISSIONS.MANAGE_STOCK),
     adminActionLogger('UPDATE_STOCK'),

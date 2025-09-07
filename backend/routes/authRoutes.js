@@ -6,10 +6,10 @@ import { requireUserOrAdmin } from '../middleware/AuthMiddleware.js';
 
 const router = express.Router();
 
-router.post('/auth/login/user', loginUser)
-router.post('/auth/login/admin', loginAdmin)
+router.post('/login/user', loginUser)
+router.post('/login/admin', loginAdmin)
 
-router.get('/auth/me', requireUserOrAdmin, getMe);
-router.post('/auth/logout', requireUserOrAdmin, logout)
+router.get('/me', requireUserOrAdmin, getMe);
+router.post('/logout', requireUserOrAdmin, logout)
 
 export default router;

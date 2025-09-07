@@ -15,7 +15,7 @@ export const loginUser = async (req, res) => {
 
         if (!email || !password) {
             return res.status(400).json({
-                succes: false,
+                success: false,
                 message: 'Email and Password are required!!'
             })
         }
@@ -27,7 +27,7 @@ export const loginUser = async (req, res) => {
         });
         if (!user) {
             return res.status(401).json({
-                succes: false,
+                success: false,
                 message: 'Invalid credentials'
             })
         }
@@ -36,7 +36,7 @@ export const loginUser = async (req, res) => {
 
         if (!isValidPassword) {
             return res.status(401).json({
-                succes: false,
+                success: false,
                 message: 'Invalid credentials'
             })
         }
@@ -45,7 +45,7 @@ export const loginUser = async (req, res) => {
         req.session.userType = 'customer';
 
         res.status(200).json({
-            succes: true,
+            success: true,
             message: 'Login Successfully',
             data: {
                 user_id: user.user_id,
@@ -56,7 +56,7 @@ export const loginUser = async (req, res) => {
         });
     } catch (error) {
         res.status(500).json({
-            succes: false,
+            success: false,
             message: 'Internal server error',
             error: error.message
         })

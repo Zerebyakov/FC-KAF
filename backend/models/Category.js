@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Config.js";
 
-
+const {DataTypes} = Sequelize;
 const Category = db.define('Category',{
     category_id:{
         type: DataTypes.INTEGER,

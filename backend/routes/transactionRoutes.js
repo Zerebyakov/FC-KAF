@@ -9,24 +9,24 @@ const router = express.Router();
 
 
 
-router.post('/transactions', requireAuth, createTransaction);
-router.get('/transactions/my-order', requireAuth, getUserTransactions);
-router.get('/transactions/detail/:id', requireAuth, getTransactionById);
+router.post('/', requireAuth, createTransaction);
+router.get('/my-order', requireAuth, getUserTransactions);
+router.get('/detail/:id', requireAuth, getTransactionById);
 
 // admin rute
-router.get('/transactions',
+router.get('/',
     requireAdminAuth,
     checkPermission(PERMISSIONS.VIEW_ORDERS),
     getAllTransactions
 )
 
-router.get('/transactions/admin/:id',
+router.get('/admin/:id',
     requireAdminAuth,
     checkPermission(PERMISSIONS.VIEW_ORDERS),
     getTransactionById
 )
 
-router.put('/transactions/:id/status',
+router.put('/:id/status',
     requireAdminAuth,
     checkPermission(PERMISSIONS.UPDATE_ORDER_STATUS),
     adminActionLogger('UPDATE_ORDER_STATUS'),

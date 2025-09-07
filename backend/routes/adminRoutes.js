@@ -9,18 +9,18 @@ import { createAdmin, getAllAdmins, updateAdmin } from '../controllers/AdminCont
 const router = express.Router();
 
 router.use(requireAdminAuth);
-router.post('/admin',
+router.post('/',
     requireAdminRole,
     checkPermission(PERMISSIONS.CREATE_ADMIN),
     adminActionLogger('CREATE_ADMIN'),
     createAdmin
 )
-router.get('/admin',
+router.get('/',
     checkPermission(PERMISSIONS.VIEW_ADMIN),
     getAllAdmins
 )
 
-router.put('/admin/:id',
+router.put('/:id',
     requireAdminRole,
     checkPermission(PERMISSIONS.EDIT_ADMIN),
     adminActionLogger('UPDATE_ADMIN'),

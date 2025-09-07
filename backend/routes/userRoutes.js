@@ -7,29 +7,29 @@ import { checkPermission, PERMISSIONS } from '../middleware/PermissionMiddleware
 
 const router = express.Router();
 
-router.post('/users/register', registerUser )
+router.post('/register', registerUser )
 
 // customer rutE
-router.get('/users/profile/:id', requireAuth, requireOwnership, getUserById);
-router.put('/users/profile/:id', requireAuth, requireOwnership, updateUser)
+router.get('/profile/:id', requireAuth, requireOwnership, getUserById);
+router.put('/profile/:id', requireAuth, requireOwnership, updateUser)
 
 // admin rute
-router.get('/users', 
+router.get('/', 
     requireAdminAuth,
     checkPermission(PERMISSIONS.VIEW_USERS),
     getAllUsers
 )
-router.get('/users/:id',
+router.get('/:id',
     requireAdminAuth,
     checkPermission(PERMISSIONS.VIEW_USERS),
     getUserById
 )
-router.put('/users/:id',
+router.put('/:id',
     requireAdminAuth,
     checkPermission(PERMISSIONS.EDIT_USERS),
     updateUser
 )
-router.delete('/users/:id',
+router.delete('/:id',
     requireAdminAuth,
     checkPermission(PERMISSIONS.DELETE_USERS),
     deleteUser

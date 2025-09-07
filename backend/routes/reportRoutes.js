@@ -12,9 +12,9 @@ router.use(requireAdminAuth);
 router.use(checkPermission(PERMISSIONS.VIEW_REPORTS));
 
 
-router.get('/reports/daily-sales', getDailySalesReport);
-router.get('/reports/monthly-sales', getMonthlySalesReport);
-router.get('/reports/inventory', getInventoryReport);
+router.get('/daily-sales', getDailySalesReport);
+router.get('/monthly-sales', getMonthlySalesReport);
+router.get('/inventory', getInventoryReport);
 
 
 export default router;

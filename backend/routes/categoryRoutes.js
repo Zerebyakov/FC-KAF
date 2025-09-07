@@ -7,24 +7,24 @@ import { adminActionLogger } from '../middleware/LoggerMiddleware.js';
 
 const router = express.Router();
 
-router.get('/categories', optionalAuth, getAllCategories);
-router.get('/categories/:id', optionalAuth, getCategoryById);
+router.get('/', optionalAuth, getAllCategories);
+router.get('/:id', optionalAuth, getCategoryById);
 // Admin rute
-router.post('/categories',
+router.post('/',
     requireAdminAuth,
     checkPermission(PERMISSIONS.CREATE_CATEGORY),
     adminActionLogger('CREATE_CATEGORY'),
     createCategory
 )
 
-router.put('/categories/:id',
+router.put('/:id',
     requireAdminAuth,
     checkPermission(PERMISSIONS.EDIT_CATEGORY),
     adminActionLogger('UPDATE_CATEGORY'),
     updateCategory
 )
 
-router.delete('/categories/:id',
+router.delete('/:id',
     requireAdminAuth,
     checkPermission(PERMISSIONS.DELETE_CATEGORY),
     adminActionLogger('DELETE_CATEGORY'),

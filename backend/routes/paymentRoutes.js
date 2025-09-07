@@ -9,26 +9,26 @@ import { checkPermission, PERMISSIONS } from '../middleware/PermissionMiddleware
 const router = express.Router();
 
 
-router.post('/payments',
+router.post('/',
     requireAuth,
     confirmPayment
 )
 
-router.get('/payments/details/:transaction_id', requireAuth, getPaymentDetails);
+router.get('/details/:transaction_id', requireAuth, getPaymentDetails);
 
-router.get('/payments/status/:payment_status',
+router.get('/status/:payment_status',
     requireAdminAuth,
     checkPermission(PERMISSIONS.VIEW_ORDERS),
     getTransactionsByPaymentStatus
 )
 
-router.put('/payments/update/:transaction_id',
+router.put('/update/:transaction_id',
     requireAdminAuth,
     checkPermission(PERMISSIONS.UPDATE_ORDER_STATUS),
     updatePaymentStatus
 );
 
-router.post('/payments/cash-received/:transaction_id',
+router.post('/cash-received/:transaction_id',
     requireAdminAuth,
     checkPermission(PERMISSIONS.UPDATE_ORDER_STATUS),
     markCashReceived

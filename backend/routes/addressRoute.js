@@ -3,16 +3,16 @@ import { createAddress, deleteAddress, getUserAddresses, updateAddress } from '.
 
 const router = express.Router();
 
-router.get('/addresses',
+router.get('/',
     getUserAddresses
 )
-router.post('/addresses',
+router.post('/',
     createAddress
 )
-router.put('/addresses/:id',
+router.put('/:id',
     updateAddress
 )
-router.delete('/addresses/:id',
+router.delete('/:id',
     deleteAddress
 )
 

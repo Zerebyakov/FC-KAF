@@ -8,9 +8,9 @@ import { checkPermission, PERMISSIONS } from '../middleware/PermissionMiddleware
 const router = express.Router();
 
 
-router.get('/reviews/average', optionalAuth, getAverageRating);
-router.post('/reviews', requireAuth, createReview)
-router.get('/reviews', 
+router.get('/average', optionalAuth, getAverageRating);
+router.post('/', requireAuth, createReview)
+router.get('/', 
     requireAdminAuth,
     checkPermission(PERMISSIONS.VIEW_REPORTS),
     getReviews
