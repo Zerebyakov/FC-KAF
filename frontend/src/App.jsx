@@ -5,6 +5,8 @@ import DashboardAdmin from "./pages/admin/DashboardAdmin";
 import DashboardStaff from "./pages/staff/DashboardStaff";
 import DashboardCustomer from "./pages/customer/DashboardCustomer";
 import LandingPage from './pages/LandingPage';
+import CategoryAdmin from './pages/admin/category/CategoryAdmin';
+import ProductAdmin from './pages/admin/product/ProductAdmin';
 
 
 function App() {
@@ -85,6 +87,22 @@ function App() {
           element={
             <AdminRoute>
               <DashboardAdmin/>
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/category"
+          element={
+            <AdminRoute>
+              <CategoryAdmin/>
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/product"
+          element={
+            <AdminRoute>
+              <ProductAdmin/>
             </AdminRoute>
           }
         />
