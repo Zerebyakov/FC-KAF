@@ -1,17 +1,14 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react"
-import baseUrl from "../components/myAPI";
+import baseUrl from "../components/api/myAPI";
 
 const AuthContext = createContext();
 
-// Create separate axios instance untuk login yang tidak show error di console
 const silentAxios = axios.create();
 
-// Intercept response untuk suppress console errors
 silentAxios.interceptors.response.use(
     (response) => response,
     (error) => {
-        // Suppress console error tapi tetap throw error untuk handling
         return Promise.reject(error);
     }
 );
@@ -20,7 +17,6 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // Get current user info
     const getMe = async () => {
         try {
             const res = await axios.get(`${baseUrl}auth/me`, {
@@ -33,8 +29,6 @@ export const AuthProvider = ({ children }) => {
             setLoading(false);
         }
     }
-
-    // Login Admin/Staff - menggunakan silentAxios
     const loginAdmin = async (email, password) => {
         try {
             const response = await silentAxios.post(`${baseUrl}auth/login/admin`, {
@@ -62,7 +56,6 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
-    // Login Customer - menggunakan silentAxios
     const loginUser = async (email, password) => {
         try {
             const response = await silentAxios.post(`${baseUrl}auth/login/user`, {
@@ -114,7 +107,6 @@ export const AuthProvider = ({ children }) => {
     
     const isAdminOrStaff = () => isAdmin() || isStaff();
 
-    // Check auth saat app dimuat
     useEffect(() => {
         getMe();
     }, []);
