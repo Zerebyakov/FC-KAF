@@ -4,7 +4,7 @@ import Category from "../models/Category.js";
 
 export const createCategory = async (req, res) => {
     try {
-        const { name, description, image_url, sort_order } = req.body;
+        const { name, description, sort_order } = req.body;
 
         if (!name) {
             return res.status(400).json({
@@ -12,6 +12,7 @@ export const createCategory = async (req, res) => {
                 message: "Category name is required"
             });
         }
+        const image_url = req.file ? `/uploads/category/${req.file.filename}` : null;
 
         const category = await Category.create({
             name,
@@ -84,7 +85,7 @@ export const getCategoryById = async (req, res) => {
 export const updateCategory = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, description, image_url, sort_order, is_active } = req.body;
+        const { name, description, sort_order, is_active } = req.body;
 
         const category = await Category.findByPk(id);
         if (!category) {
@@ -93,11 +94,12 @@ export const updateCategory = async (req, res) => {
                 message: "Category not found"
             });
         }
+        const image_url = req.file ? `/uploads/category/${req.file.filename}` : category.image_url;
 
         await category.update({
             name: name || category.name,
             description: description || category.description,
-            image_url: image_url || category.image_url,
+            image_url: image_url,
             sort_order: sort_order !== undefined ? sort_order : category.sort_order,
             is_active: is_active !== undefined ? is_active : category.is_active
         });

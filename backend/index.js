@@ -7,7 +7,7 @@ import { requestLogger } from './middleware/LoggerMiddleware.js'
 import compression from 'compression'
 import helmet from 'helmet'
 import morgan from 'morgan'
-
+import path from 'path'
 import db from './config/Config.js'
 
 import apiRoutes from './routes/allRoutes.js'
@@ -15,7 +15,7 @@ import apiRoutes from './routes/allRoutes.js'
 dotenv.config();
 
 const app = express();
-app.listen(process.env.APP_PORT,()=>{
+app.listen(process.env.APP_PORT, () => {
     console.log('Server up and running !!')
 })
 
@@ -26,7 +26,7 @@ app.use(helmet({
             defaultSrc: ["'self'"],
             styleSrc: ["'self'", "'unsafe-inline'"],
             scriptSrc: ["'self'"],
-            imgSrc: ["'self'", "data:", "https:"],
+            imgSrc: [process.env.PORT_APP, "'self'", "data:", "https:"],
         },
     },
     crossOriginEmbedderPolicy: false
@@ -49,7 +49,7 @@ app.use(session({
     secret: process.env.SESS_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie:{
+    cookie: {
         secure: false
     },
     name: 'sessionId'
@@ -62,7 +62,7 @@ const testDatebaseConnection = async () => {
         await db.authenticate();
         console.log('Database connection established succesfully')
 
-        await db.sync({force: false})
+        await db.sync({ force: false })
         console.log('Database synchronized succesfully')
     } catch (error) {
         console.log(error.message);
@@ -70,7 +70,11 @@ const testDatebaseConnection = async () => {
     }
 }
 testDatebaseConnection();
-
+app.use('/uploads', (req, res, next) => {
+    res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+    res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+    next();
+}, express.static(path.join(process.cwd(), 'uploads')));
 app.use('/api/v1', apiRoutes);
 
 
