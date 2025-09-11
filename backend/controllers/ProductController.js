@@ -11,7 +11,6 @@ export const createProduct = async (req, res) => {
             name,
             description,
             base_price,
-            image_url,
             stock_quantity,
             preparation_time
         } = req.body;
@@ -23,6 +22,7 @@ export const createProduct = async (req, res) => {
             })
         }
 
+        const image_url = req.file? `/uploads/products/${req.file.filename}` : null;
 
         const product = await Product.create({
             category_id,
@@ -146,7 +146,6 @@ export const updateProduct = async (req, res) => {
             name,
             description,
             base_price,
-            image_url,
             stock_quantity,
             is_available,
             preparation_time
@@ -160,12 +159,13 @@ export const updateProduct = async (req, res) => {
                 message: 'Product not found'
             })
         }
+        const image_url = req.file? `/uploads/products/${req.file.filename}` : product.image_url;
         await product.update({
             category_id: category_id || product.category_id,
             name: name || product.name,
             description: description || product.description,
             base_price: base_price || product.base_price,
-            image_url: image_url || product.image_url,
+            image_url: image_url,
             stock_quantity: stock_quantity !== undefined ? stock_quantity : product.stock_quantity,
             is_available: is_available !== undefined ? is_available : product.is_available,
             preparation_time: preparation_time || product.preparation_time
