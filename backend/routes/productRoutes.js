@@ -1,6 +1,6 @@
 import express from 'express';
 import { optionalAuth, requireAdminAuth } from '../middleware/AuthMiddleware.js';
-import { createProduct, getAllProducts, getProductById, updateProduct, updateStock } from '../controllers/ProductController.js';
+import { createProduct, deleteProduct, getAllProducts, getProductById, updateProduct, updateStock } from '../controllers/ProductController.js';
 import { checkPermission, PERMISSIONS } from '../middleware/PermissionMiddleware.js';
 import { adminActionLogger } from '../middleware/LoggerMiddleware.js';
 import multer from 'multer';
@@ -69,6 +69,13 @@ router.put('/:id/stock',
     checkPermission(PERMISSIONS.MANAGE_STOCK),
     adminActionLogger('UPDATE_STOCK'),
     updateStock
+)
+
+router.delete('/:id',
+    requireAdminAuth,
+    checkPermission(PERMISSIONS.DELETE_PRODUCT),
+    adminActionLogger('DELETE_PRODUCT'),
+    deleteProduct
 )
 
 export default router;

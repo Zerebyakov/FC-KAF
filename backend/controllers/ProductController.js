@@ -22,7 +22,7 @@ export const createProduct = async (req, res) => {
             })
         }
 
-        const image_url = req.file? `/uploads/products/${req.file.filename}` : null;
+        const image_url = req.file ? `/uploads/products/${req.file.filename}` : null;
 
         const product = await Product.create({
             category_id,
@@ -159,7 +159,7 @@ export const updateProduct = async (req, res) => {
                 message: 'Product not found'
             })
         }
-        const image_url = req.file? `/uploads/products/${req.file.filename}` : product.image_url;
+        const image_url = req.file ? `/uploads/products/${req.file.filename}` : product.image_url;
         await product.update({
             category_id: category_id || product.category_id,
             name: name || product.name,
@@ -221,6 +221,34 @@ export const updateStock = async (req, res) => {
                 stock_quantity: product.stock_quantity
             }
         });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+            error: error.message
+        });
+    }
+}
+
+export const deleteProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const product = await Product.findByPk(id);
+        if (!product) {
+            return res.status(404).josn({
+                success: false,
+                message: 'Product not found'
+            })
+        }
+
+        await product.update({
+            is_available: false
+        });
+        res.status(200).json({
+            success: true,
+            message: 'Product deleted succesfully'
+        })
     } catch (error) {
         res.status(500).json({
             success: false,
