@@ -7,6 +7,7 @@ import DashboardCustomer from "./pages/customer/DashboardCustomer";
 import LandingPage from './pages/LandingPage';
 import CategoryAdmin from './pages/admin/category/CategoryAdmin';
 import ProductAdmin from './pages/admin/product/ProductAdmin';
+import ProductAddonAdmin from './pages/admin/product/ProductAddonAdmin';
 
 
 function App() {
@@ -103,6 +104,14 @@ function App() {
           element={
             <AdminRoute>
               <ProductAdmin/>
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/addon"
+          element={
+            <AdminRoute>
+              <ProductAddonAdmin/>
             </AdminRoute>
           }
         />

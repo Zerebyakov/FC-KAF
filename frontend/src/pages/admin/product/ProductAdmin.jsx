@@ -24,6 +24,16 @@ const ProductAdmin = () => {
     const [listCategory, setListCategory] = useState([])
 
     const [selectedId, setSelectedId] = useState(null)
+    const [showAlertSuccess, setShowAlertSuccess] = useState(false);
+    const [showAlertUpdate, setShowAlertUpdate] = useState(false);
+    const [showAlertDanger, setShowAlertDanger] = useState(false);
+
+    const [closingSuccess, setClosingSuccess] = useState(false);
+    const [closingUpdate, setClosingUpdate] = useState(false);
+    const [closingDanger, setClosingDanger] = useState(false);
+
+    const [showPopUpDelete, setShowPopUpDelete] = useState(false);
+
     const [currentImage, setCurrentImage] = useState(null)
 
     const [nameUpd, setNameUpd] = useState('')
@@ -34,6 +44,9 @@ const ProductAdmin = () => {
     const [stockUpd, setStockUpd] = useState('')
     const [imageUpd, setImageUpd] = useState(null)
     const [imagePreviewUpd, setImagePreviewUpd] = useState(null);
+
+
+    const [selectedProductId, setSelectedProductId] = useState(null)
 
     useEffect(() => {
         getAllProducts();
@@ -76,6 +89,9 @@ const ProductAdmin = () => {
         if (imageAdd) {
             formData.append('image_url', imageAdd)
         }
+        if(!nameAdd || !descriptionAdd || !priceAdd || !stockAdd || !prepareAdd || !categoryAdd) {
+            alert('Every field must be contain')
+        }
 
         try {
             await axios.post(`${baseUrl}products`, formData, {
@@ -87,7 +103,14 @@ const ProductAdmin = () => {
             getAllProducts();
             resetAddForm();
             setShowModalAdd(false);
-            alert('Add Product succesfully !!')
+            setShowAlertSuccess(true);
+            setTimeout(() => {
+                setClosingSuccess(true);
+                setTimeout(() => {
+                    setShowAlertSuccess(false);
+                    setClosingSuccess(false);
+                }, 500)
+            }, 3000)
         } catch (error) {
             console.log('ERROR CANNOT ADD PRODUCT', error)
         }
@@ -161,7 +184,14 @@ const ProductAdmin = () => {
             })
             getAllProducts();
             handleCloseModalUpd();
-            alert('Product berhasil diupdate !')
+            setShowAlertUpdate(true);
+            setTimeout(() => {
+                setClosingUpdate(true);
+                setTimeout(() => {
+                    setClosingUpdate(false);
+                    setShowAlertUpdate(false);
+                }, 500)
+            }, 3000)
         } catch (error) {
             console.log('CANNOT UPDATE THE PRODUCT', error)
             alert('GAGAL UPDATE PRODUCT', error)
@@ -194,8 +224,75 @@ const ProductAdmin = () => {
         }
     }
 
+
+    const deleteProduct = async (id) => {
+        try {
+            await axios.delete(`${baseUrl}products/${id}`, {
+                withCredentials: true
+            });
+            getAllProducts();
+            setShowAlertDanger(true);
+            setTimeout(() => {
+                setClosingDanger(true);
+                setTimeout(() => {
+                    setShowAlertDanger(false);
+                    setClosingDanger(false)
+                }, 500)
+            }, 3000)
+        } catch (error) {
+            console.log('CANNOT DELETE PRODUCT');
+            alert('FAILED', error)
+        } finally {
+            setShowPopUpDelete(false);
+            setSelectedProductId(null);
+        }
+    }
+
     return (
         <AdminLayout>
+            {showAlertUpdate && (
+                <>
+                    <div className="fixed top-5 right-5 z-50">
+                        <div
+                            className={`flex items-center p-4 mb-4 text-sm text-amber-800 rounded-lg bg-amber-50 shadow-lg
+      ${closingUpdate ? 'animate-slide-out' : 'animate-slide-in'}`}
+                        >
+                            <svg className="flex-shrink-0 inline w-5 h-5 mr-3 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-7.071 7.071a1 1 0 01-1.414 0L3.293 9.414a1 1 0 011.414-1.414L9 11.293l6.293-6.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                            </svg>
+                            <span className="font-medium">Success!</span>&nbsp; Product has been updated.
+                        </div>
+                    </div>
+                </>
+            )}
+            {showAlertSuccess && (
+                <div className="fixed top-5 right-5 z-50">
+                    <div
+                        className={`flex items-center p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 shadow-lg
+      ${closingSuccess ? 'animate-slide-out' : 'animate-slide-in'}`}
+                    >
+                        <svg className="flex-shrink-0 inline w-5 h-5 mr-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-7.071 7.071a1 1 0 01-1.414 0L3.293 9.414a1 1 0 011.414-1.414L9 11.293l6.293-6.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
+                        </svg>
+                        <span className="font-medium">Success!</span>&nbsp; Product successfully created.
+                    </div>
+                </div>
+            )}
+
+            {showAlertDanger && (
+                <div className="fixed top-5 right-5 z-50">
+                    <div
+                        className={`flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:text-red-400 dark:border-red-800
+      ${closingDanger ? 'animate-slide-out' : 'animate-slide-in'}`}
+                        role="alert"
+                    >
+                        <svg className="shrink-0 inline w-4 h-4 me-3" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                        </svg>
+                        <span className="font-medium">Deleted! </span> Product deleted.
+                    </div>
+                </div>
+            )}
             <div className="w-full flex justify-between items-center mb-3 mt-1 pl-3">
                 <div>
                     <button
@@ -280,7 +377,10 @@ const ProductAdmin = () => {
                                         </svg>
                                     </button>
                                     <button
-                                        // onClick={() => deleteCategory(item.category_id)}
+                                        onClick={() => {
+                                            setSelectedProductId(item.product_id);
+                                            setShowPopUpDelete(true)
+                                        }}
                                         type="button" className="text-slate-500 hover:text-slate-700">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-6 h-6">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -354,6 +454,7 @@ const ProductAdmin = () => {
                                                 onChange={(e) => setDescriptionAdd(e.target.value)}
                                                 className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
                                                 placeholder="Category description"
+                                                required
                                             />
                                         </div>
 
@@ -365,6 +466,7 @@ const ProductAdmin = () => {
                                                 onChange={(e) => setPriceAdd(e.target.value)}
                                                 className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
                                                 placeholder="Rp.XXXXXX"
+                                                required
                                             />
                                         </div>
 
@@ -376,6 +478,7 @@ const ProductAdmin = () => {
                                                 onChange={(e) => setStockAdd(e.target.value)}
                                                 className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
                                                 placeholder="Stock: 10,20,30..."
+                                                required
                                             />
                                         </div>
 
@@ -387,6 +490,7 @@ const ProductAdmin = () => {
                                                 onChange={(e) => setPrepareAdd(e.target.value)}
                                                 className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
                                                 placeholder="in minute: 10,20,30..."
+                                                required
                                             />
                                         </div>
 
@@ -397,6 +501,7 @@ const ProductAdmin = () => {
                                                     value={categoryAdd}
                                                     onChange={(e) => setCategoryAdd(e.target.value)}
                                                     className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer"
+                                                    required
                                                 >
                                                     <option value="">Selected Category</option>
                                                     {listCategory.map((lc) => (
@@ -584,6 +689,44 @@ const ProductAdmin = () => {
                         </div>
                     </div>
 
+                </>
+            )}
+
+
+            {showPopUpDelete && (
+                <>
+                    <div id="popup-modal" tabindex="-1"
+                        class="bg-black/50 flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                        <div class="relative p-4 w-full max-w-md max-h-full">
+                            <div class="relative bg-white rounded-lg shadow-sm">
+                                <button
+                                    onClick={() => setShowPopUpDelete(false)}
+                                    type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="popup-modal">
+                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                    </svg>
+                                    <span class="sr-only">Close modal</span>
+                                </button>
+                                <div class="p-4 md:p-5 text-center">
+                                    <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+                                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete this category?</h3>
+                                    <button
+                                        onClick={() => deleteProduct(selectedProductId)}
+                                        type="button"
+                                        className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+                                    >
+                                        Confirm
+                                    </button>
+
+                                    <button
+                                        onClick={() => setShowPopUpDelete(false)}
+                                        data-modal-hide="popup-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </>
             )}
         </AdminLayout>

@@ -222,10 +222,10 @@ const CategoryAdmin = () => {
     getCategoryById(id);
     setShowModalUpd(true);
   }
-  const handleDeleteClick = () => {
-    setSelectedId(id);
-    deleteCategory(id);
-  }
+  // const handleDeleteClick = () => {
+  //   setSelectedId(id);
+  //   deleteCategory(id);
+  // }
   return (
     <AdminLayout>
       <div>
