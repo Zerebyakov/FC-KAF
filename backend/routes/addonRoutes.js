@@ -7,7 +7,7 @@ import { adminActionLogger } from '../middleware/LoggerMiddleware.js';
 
 const router = express.Router();
 
-router.get('/product/:id',
+router.get('/product/:product_id',
     optionalAuth,
     getAddonsByProduct
 )
