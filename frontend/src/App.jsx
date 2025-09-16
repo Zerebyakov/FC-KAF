@@ -8,6 +8,7 @@ import LandingPage from './pages/LandingPage';
 import CategoryAdmin from './pages/admin/category/CategoryAdmin';
 import ProductAdmin from './pages/admin/product/ProductAdmin';
 import ProductAddonAdmin from './pages/admin/product/ProductAddonAdmin';
+import TransactionAdmin from './pages/admin/transaction/TransactionAdmin';
 
 
 function App() {
@@ -112,6 +113,14 @@ function App() {
           element={
             <AdminRoute>
               <ProductAddonAdmin/>
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/transaction"
+          element={
+            <AdminRoute>
+              <TransactionAdmin/>
             </AdminRoute>
           }
         />

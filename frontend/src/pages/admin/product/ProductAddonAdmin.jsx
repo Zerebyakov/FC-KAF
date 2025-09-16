@@ -4,7 +4,7 @@ import AdminLayout from '../layout/AdminLayout'
 const ProductAddonAdmin = () => {
   return (
     <AdminLayout>
-      Addon
+      addons but is clear
     </AdminLayout>
   )
 }
